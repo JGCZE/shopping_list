@@ -1,20 +1,18 @@
 import Link from "next/link";
 import React from "react";
-import { List } from "./components/List";
+import { ItemsList } from "./ItemsList";
 
 const ShoppingList = () => {
   return (
-    <>
+    <div className="container">
       <h2>Nákupní seznamy</h2>
-      <Link
-        href="/newList"
-        className="border-2 px-4 py-4 rounded-md"
-      >
+
+      <Link href="/newList" className="border-1 px-4 rounded-md py-2 w-min ">
         Vytvořit
       </Link>
 
-      <List />
-    </>
+      <ItemsList />
+    </div>
   );
 };
 
