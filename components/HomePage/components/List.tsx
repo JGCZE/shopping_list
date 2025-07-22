@@ -1,18 +1,18 @@
 import Link from "next/link";
 import React from "react";
 
-export type TItem = {
+export type TList = {
   id: number;
   name: string;
   link: string;
 };
 
 interface IProps {
-  mockItems: Array<TItem>;
+  mockLists: Array<TList>;
 }
 
 export const List = ({}: IProps) => {
-  const mockItems: Array<TItem> = [
+  const mockLists: Array<TList> = [
     { id: 1, name: "Můj nákupní seznam 1", link: "/list/1" },
     { id: 2, name: "Můj nákupní seznam 2", link: "/list/2" },
     { id: 3, name: "Můj nákupní seznam 3", link: "/list/3" },
@@ -20,18 +20,16 @@ export const List = ({}: IProps) => {
 
   return (
     <div>
-      {mockItems?.map((item) => (
-        <div key={item.id} className="my-4 grid grid-cols-3 gap-4">
-          <Link href={item.link} className="font-bold text-blue-500">
+      {mockLists?.map((item) => (
+        <div key={item.id} className="my-4 flex items-center gap-24">
+          <Link href={item.link} className="">
             {item.name}
           </Link>
 
-          <div className="flex justify-end gap-4 ">
-            <button>
-              <Link href={item.link} className="">
-                Editovat
+          <div className="flex items-center justify-end gap-4">
+              <Link href={`/editList/${item.id}`} className="border-2 px-8 py-4">
+                Upravit
               </Link>
-            </button>
 
             <button className="">Smazat</button>
           </div>
