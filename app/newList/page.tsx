@@ -1,21 +1,33 @@
+"use client";
 import Button from "@/components/ui/Button";
+import useShoppingList from "@/hooks/useShoppingList";
 import { EButtonVariant } from "@/lib/enums";
 import Link from "next/link";
-import React from "react";
 
 const NewList = () => {
+  const { saveNewList } = useShoppingList();
+
+  const handleNewList = (formData: FormData) => {
+    saveNewList(formData);
+  };
+
   return (
     <div className="container">
       <h2>Vytvoření nového seznamu</h2>
 
-      <div className="flex items-center gap-4">
-        <p>nazev </p>
-        <input type="text" />
-      </div>
+      <form
+        action={(data) => handleNewList(data)}
+        className="flex flex-col gap-4"
+      >
+        <div className="mb-4">
+          <label htmlFor="listName">nazev </label>
+          <input type="text" id="listName" name="listItem" />
+        </div>
 
-      <div className="mt-12 flex flex-col gap-4">
-        <Button variant={EButtonVariant.PRIMARY}>Vytvořit</Button>
-      </div>
+        <Button variant={EButtonVariant.PRIMARY} type="submit">
+          Vytvořit
+        </Button>
+      </form>
 
       <Link href="/">Zpět na hlavní stránku</Link>
     </div>

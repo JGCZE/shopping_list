@@ -9,20 +9,14 @@ export type TList = {
   link: string;
 };
 
-interface IProps {
-  mockLists: Array<TList>;
+export interface IProps {
+  items: Array<TList>;
 }
 
-export const ItemsList = ({}: IProps) => {
-  const mockLists: Array<TList> = [
-    { id: 1, name: "Můj nákupní seznam 1", link: "/list/1" },
-    { id: 2, name: "Můj nákupní seznam 2", link: "/list/2" },
-    { id: 3, name: "Můj nákupní seznam 3", link: "/list/3" },
-  ];
-
+export const ItemsList = ({ items }: IProps) => {
   return (
     <div>
-      {mockLists?.map((item) => (
+      {items?.map((item) => (
         <div key={item.id} className="my-4 flex items-center gap-24">
           <Link href={item.link} className="!text-blue-700">
             {item.name}

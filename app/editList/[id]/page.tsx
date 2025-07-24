@@ -1,7 +1,7 @@
 import Button from "@/components/ui/Button";
 import { EButtonVariant } from "@/lib/enums";
 import Link from "next/link";
-import React from "react";
+import React, { use } from "react";
 
 const EditList = ({}) => {
   return (

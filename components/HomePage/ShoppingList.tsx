@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { ItemsList } from "./ItemsList";
+import useShoppingList from "@/hooks/useShoppingList";
 
 const ShoppingList = () => {
+  const { list } = useShoppingList();
+
   return (
     <div className="container">
       <h2>Nákupní seznamy</h2>
@@ -11,7 +15,7 @@ const ShoppingList = () => {
         Vytvořit
       </Link>
 
-      <ItemsList />
+      <ItemsList items={list} />
     </div>
   );
 };
