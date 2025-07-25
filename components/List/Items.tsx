@@ -1,17 +1,12 @@
 import { EButtonVariant } from "@/lib/enums";
 import React from "react";
 import Button from "../ui/Button";
+import { TItemsList } from "@/lib/types";
 
-const mockItems = [
-  { id: 1, name: "Rohlíky", amount: 2 },
-  { id: 2, name: "Vejce", amount: 0 },
-  { id: 3, name: "Chleba", amount: 1 },
-];
-
-const Items = ({ items }: { items: Array<Item> }) => {
+const Items = ({ items }: TItemsList) => {
   return (
     <div>
-      {mockItems?.map((item) => (
+      {items?.map((item) => (
         <div key={item.id} className="my-4 flex justify-between gap-24 w-1/2">
           <span className="">
             {item.name} ({item.amount})

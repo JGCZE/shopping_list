@@ -1,11 +1,5 @@
-import ShoppingList from "../components/HomePage/ShoppingList";
+import ShoppingList from "../components/HomePage/ShoppingListsOverview";
 
-const Home = () => {
-  return (
-    <div>
-      <ShoppingList />
-    </div>
-  );
-};
+const Home = () =>  <ShoppingList />
 
 export default Home;

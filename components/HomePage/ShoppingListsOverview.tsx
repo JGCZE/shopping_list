@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { ItemsList } from "./ItemsList";
 import useShoppingList from "@/hooks/useShoppingList";
+import ShoppingLists from "./components/ShoppingLists";
 
-const ShoppingList = () => {
-  const { list } = useShoppingList();
+const ShoppingListsOverview = () => {
+  const { shoppingList } = useShoppingList();
 
   return (
     <div className="container">
@@ -15,9 +15,9 @@ const ShoppingList = () => {
         Vytvořit
       </Link>
 
-      <ItemsList items={list} />
+      <ShoppingLists shoppingList={shoppingList} />
     </div>
   );
 };
 
-export default ShoppingList;
+export default ShoppingListsOverview;
