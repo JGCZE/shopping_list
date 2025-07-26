@@ -11,7 +11,7 @@ const ShoppingListsOverview = () => {
     <div className="container">
       <h2>Nákupní seznamy</h2>
 
-      <Link href="/newList" className="border-1 px-4 rounded-md py-2 w-min ">
+      <Link href="/newList" className="border-1 px-4 rounded-md my-6 py-2 w-min ">
         Vytvořit
       </Link>
 

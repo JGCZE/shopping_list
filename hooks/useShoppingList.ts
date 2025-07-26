@@ -1,18 +1,18 @@
 "use client";
 import { generateId, makeUrlFromString } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TShoppingList } from "@/lib/types";
 
 interface IReturn {
   saveNewList: (formData: FormData) => void;
   saveNewItemsToExistingList: (formData: FormData) => void;
-  shoppingList: TShoppingList['shoppingList'];
+  shoppingList: TShoppingList["shoppingList"];
 }
 
-const useShoppingList = (decodedSlug: string): IReturn => {
-  const [shoppingList, setShoppingList] = useState<TShoppingList['shoppingList']>([]);
+const useShoppingList = (decodedSlug?: string): IReturn => {
+  const [shoppingList, setShoppingList] = useState<TShoppingList["shoppingList"]>([]);
 
-  const saveNewList = (formData: FormData) => {
+  const saveNewList = useCallback((formData: FormData) => {
     const formDataItem = formData.get("listItem")?.toString();
 
     if (!formDataItem?.trim().length) {
@@ -23,55 +23,49 @@ const useShoppingList = (decodedSlug: string): IReturn => {
       id: generateId(),
       name: formDataItem,
       link: `/${makeUrlFromString(formDataItem)}`,
+      items: [],
     };
 
     const existingLists = localStorage.getItem("shoppingList");
     const parsedLists = existingLists ? JSON.parse(existingLists) : [];
-    localStorage.setItem(
-      "shoppingList",
-      JSON.stringify([...parsedLists, newList])
-    );
-  };
+    const updatedLists = [...parsedLists, newList];
 
-  useEffect(() => {
-    loadShoppingList();
+    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+    setShoppingList(updatedLists);
   }, []);
 
-  const loadShoppingList = () => {
+  useEffect(() => {
+    // Loading all of the shopping lists from localStorage
     const existingLists = localStorage.getItem("shoppingList");
     const parsedLists = existingLists ? JSON.parse(existingLists) : [];
-
-    if (!parsedLists) {
-      return [];
-    }
-
     setShoppingList(parsedLists);
-  };
+  }, []);
 
-  const saveNewItemsToExistingList = () => {
-    const filteredList = shoppingList.filter(
-      (item) => item.link === `/${decodedSlug}`
-    );
+  const saveNewItemsToExistingList = useCallback((formData: FormData) => {
+    const formItem = formData.get("listItem")?.toString();
+    const formAmount = formData.get("listAmount")?.toString() || "1";
 
-    if (!filteredList.length) {
+    const validAmount = Number(formAmount);
+
+    if (!formItem?.trim().length || !validAmount) {
       return;
     }
 
-    // Example of how to add items to the filtered list
-    const listOfItems = [{id: 1, name: "Example Item", amount: 1}];
+    const createdItemsToList = { id: generateId(), name: formItem, amount: validAmount };
 
-    const updatedList = filteredList.map((item) => ({
-      ...item,
-      items: listOfItems,
-    }));
+    const updatedLists = shoppingList.map((list) => {
+      if (list.link === `/${decodedSlug}`) {
+        return {
+          ...list,
+          items: [...list.items, createdItemsToList],
+        };
+      }
+      return list;
+    });
 
-    console.log("Updated List:", updatedList);
-    localStorage.setItem(
-      "shoppingList",
-      JSON.stringify([...shoppingList.filter(item => item.link !== `/${decodedSlug}`), ...updatedList])
-    );
-  }
-   
+    setShoppingList(updatedLists);
+    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+  }, [shoppingList, decodedSlug]);
 
   return {
     saveNewList,

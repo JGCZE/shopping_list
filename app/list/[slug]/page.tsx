@@ -1,35 +1,38 @@
-"use client"
+"use client";
 import CreateForm from "@/components/CreateForm";
-import Items from "@/components/List/Items";
+import Items from "@/components/List/Lists";
 import useShoppingList from "@/hooks/useShoppingList";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React from "react";
 
 const List = () => {
-  const params = useParams();
-  const decodedSlug = decodeURIComponent(params.slug as string);
+  const { slug } = useParams();
+  const decodedSlug = decodeURIComponent(slug as string);
 
-  const { shoppingList, saveNewItemsToExistingList } = useShoppingList(decodedSlug);
+  const { shoppingList, saveNewItemsToExistingList } =
+    useShoppingList(decodedSlug);
 
+  const currentList = shoppingList.find((item) => item.link === `/${decodedSlug}`);
 
-
-
+  if (!currentList) {
+    return <div>Seznam nenalezen</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
       <h2>Položky seznamu</h2>
-      <p>{}</p>
+      <p>{currentList?.name}</p>
 
-      <CreateForm saveNewList={saveNewItemsToExistingList} />
+      <CreateForm
+        saveNewList={saveNewItemsToExistingList}
+        withNumberInput
+      />
 
-      {!shoppingList.length ? (
-        <p className="text-gray-500">Seznam je prázdný.</p>
-      ) : (
-        <Items list={shoppingList} />
-      )}
+       {!!currentList && <Items shoppingList={currentList} />}
 
-      <Link href="/">Zpět na hlavní stránku</Link>
+      <Link href="/" className="w-54">
+        Zpět na hlavní stránku
+      </Link>
     </div>
   );
 };

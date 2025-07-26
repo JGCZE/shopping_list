@@ -11,7 +11,7 @@ const ShoppingLists = ({ shoppingList }: TShoppingList) => {
   return (
     <div>
       {shoppingList?.map(({id, link, name}) => (
-        <div key={id} className="my-4 flex items-center gap-24">
+        <div key={id} className="my-4 gap-24">
           <Link href={`/list/${link}`} className="!text-blue-700">
             {name}
           </Link>
