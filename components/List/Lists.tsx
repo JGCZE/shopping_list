@@ -12,7 +12,7 @@ const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
   return (
     <div>
       <h2>{shoppingList.name}</h2>
-      {shoppingList.items?.length === 0 && <p className="text-gray-500">Seznam je prázdný.</p>}
+      {!shoppingList.items?.length && <h3 className="text-gray-500 font-bold">Seznam je prázdný.</h3>}
 
       <div className="flex flex-col">
         {shoppingList.items?.map(({ id, name, amount }) => (
