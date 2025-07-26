@@ -37,6 +37,7 @@ const List = () => {
       <CreateForm
         onChange={handleAddNewItem}
         withNumberInput
+        hasWhisperSuggestions
       />
 
       {status.message &&

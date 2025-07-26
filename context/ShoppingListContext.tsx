@@ -12,6 +12,7 @@ interface IShoppingListContext {
   deleteList: (id: string) => void;
   deleteItemFromList: (listId: string, itemId: string) => void;
   updateItemInList: (listId: string, itemId: string, updates: { name?: string; amount?: number }) => void;
+  getAllUniqueItems: () => Array<string>;
 }
 
 const ShoppingListContext = createContext<IShoppingListContext | null>(null);
@@ -172,11 +173,22 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [status]);
 
+  const getAllUniqueItems = useCallback(() => {
+    const allItems = shoppingList.flatMap(list => list.items);
+
+    const uniqueItems = Array.from(
+      new Map(allItems.map(item => [item.name.toLowerCase(), item.name])).values()
+    );
+  
+    return uniqueItems.sort();
+  }, [shoppingList]);
+
   const values = {
     shoppingList,
     status,
     saveNewList,
     updateListName,
+    getAllUniqueItems,
     saveNewItemsToExistingList,
     deleteList,
     deleteItemFromList,
