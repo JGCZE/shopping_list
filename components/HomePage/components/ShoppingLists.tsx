@@ -1,10 +1,12 @@
 import Link from "next/link";
-import React from "react";
 import Button from "../../ui/Button";
 import { EButtonVariant } from "@/lib/enums";
 import { TShoppingList } from "@/lib/types";
+import useShoppingList from "@/hooks/useShoppingList";
 
 const ShoppingLists = ({ shoppingList }: TShoppingList) => {
+  const { handleDeleteList } = useShoppingList();
+
   if (!shoppingList || !shoppingList.length) {
     return <h3 className="text-gray-500 font-extrabold">Žádné nákupní seznamy nebyly nalezeny.</h3>;
   }
@@ -25,7 +27,12 @@ const ShoppingLists = ({ shoppingList }: TShoppingList) => {
               Upravit
             </Link>
 
-            <Button variant={EButtonVariant.DELETE}>Smazat</Button>
+            <Button
+              variant={EButtonVariant.DELETE}
+              onClick={() => handleDeleteList(id)}
+            >
+              Smazat
+            </Button>
           </div>
         </div>
       ))}

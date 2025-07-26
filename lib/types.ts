@@ -14,3 +14,8 @@ export type TShopList = {
 export type TShoppingList = {
   shoppingList: Array<TShopList>;
 };
+
+export type TStatus = {
+  status: string;
+  message: string;
+};

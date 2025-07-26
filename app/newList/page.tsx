@@ -1,16 +1,25 @@
 "use client";
-import CreateForm from "@/components/UpdateForm";
+import UpdateForm from "@/components/UpdateForm";
 import useShoppingList from "@/hooks/useShoppingList";
+import { clsx } from "clsx";
 import Link from "next/link";
 
 const NewList = () => {
-  const { saveNewList } = useShoppingList();
+  const { saveNewList, status } = useShoppingList();
 
   return (
     <div className="container">
       <h2>Vytvoření nového seznamu</h2>
 
-      <CreateForm onChange={saveNewList} />
+      {status.message &&
+        <p className={clsx({
+          "text-red-500": status.status === "error",
+          "text-green-500": status.status === "success"
+        })}>
+          {status.message}
+      </p>}
+
+      <UpdateForm onChange={saveNewList} />
 
       <Link href="/">Zpět na hlavní stránku</Link>
     </div>

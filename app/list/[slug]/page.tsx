@@ -4,12 +4,13 @@ import Items from "@/components/List/Lists";
 import useShoppingList from "@/hooks/useShoppingList";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import clsx from "clsx";
 
 const List = () => {
   const { slug } = useParams();
   const decodedSlug = decodeURIComponent(slug as string);
 
-  const { shoppingList, saveNewItemsToExistingList } =
+  const { shoppingList, saveNewItemsToExistingList, status } =
     useShoppingList(decodedSlug);
 
   const currentList = shoppingList.find((item) => item.link === `/${decodedSlug}`);
@@ -33,6 +34,14 @@ const List = () => {
         onChange={saveNewItemsToExistingList}
         withNumberInput
       />
+
+      {status.message &&
+        <p className={clsx({
+           "text-red-500": status.status === "error",
+           "text-green-500": status.status === "success"
+         })}>
+           {status.message}
+        </p>}
 
        {!!currentList && <Items shoppingList={currentList} />}
 

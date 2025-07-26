@@ -2,12 +2,19 @@ import { EButtonVariant } from "@/lib/enums";
 import React from "react";
 import Button from "../ui/Button";
 import { TShopList } from '@/lib/types';
+import useShoppingList from "@/hooks/useShoppingList";
 
 const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
+  const { deleteItemFromList } = useShoppingList();
 
   if (!shoppingList) {
     return <p className="text-gray-500">Seznam je prázdný.</p>;
   }
+
+  const handleDeleteItem = (itemId: string) => {
+    deleteItemFromList(itemId, shoppingList.id);
+  };
+
 
   return (
     <div>
@@ -22,7 +29,12 @@ const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
               {amount} kusů
             </span>
 
-            <Button variant={EButtonVariant.DELETE}>Smazat</Button>
+            <Button
+              variant={EButtonVariant.DELETE}
+              onClick={() => handleDeleteItem(id)}
+            >
+              Smazat
+            </Button>
           </div>
         ))}
       </div>
