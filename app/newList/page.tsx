@@ -1,6 +1,6 @@
 "use client";
 import UpdateForm from "@/components/UpdateForm";
-import useShoppingList from "@/hooks/useShoppingList";
+import { useShoppingList } from "@/context/ShoppingListContext";
 import { clsx } from "clsx";
 import Link from "next/link";
 

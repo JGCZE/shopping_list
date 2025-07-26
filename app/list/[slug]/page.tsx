@@ -1,19 +1,23 @@
 "use client";
 import CreateForm from "@/components/UpdateForm";
 import Items from "@/components/List/Lists";
-import useShoppingList from "@/hooks/useShoppingList";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import clsx from "clsx";
+import { useShoppingList } from "@/context/ShoppingListContext";
 
 const List = () => {
   const { slug } = useParams();
   const decodedSlug = decodeURIComponent(slug as string);
 
   const { shoppingList, saveNewItemsToExistingList, status } =
-    useShoppingList(decodedSlug);
+    useShoppingList();
 
   const currentList = shoppingList.find((item) => item.link === `/${decodedSlug}`);
+
+  const handleAddNewItem = (formData: FormData) => {
+    saveNewItemsToExistingList(formData, decodedSlug);
+  };
 
   if (!currentList) {
     return (
@@ -31,7 +35,7 @@ const List = () => {
       <h2>Položky seznamu</h2>
 
       <CreateForm
-        onChange={saveNewItemsToExistingList}
+        onChange={handleAddNewItem}
         withNumberInput
       />
 

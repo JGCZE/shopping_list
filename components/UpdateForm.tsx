@@ -4,11 +4,19 @@ import { EButtonVariant } from "@/lib/enums";
 
 interface IProps {
   onChange: (formData: FormData) => void;
+  onDelete?: () => void;
   withNumberInput?: boolean;
   deleteButtonName?: string;
+  submitButtonName?: string;
 }
 
-const UpdateForm = ({ onChange, withNumberInput, deleteButtonName }: IProps) => (
+const UpdateForm = ({
+  onChange,
+  onDelete,
+  withNumberInput,
+  deleteButtonName,
+  submitButtonName = "Vytvořit",
+}: IProps) => (
   <form action={(data) => onChange(data)} className="flex flex-col gap-3">
     <div className="grid grid-cols-3 mb-4 w-1/2">
       <label htmlFor="listName" className="">nazev </label>
@@ -31,11 +39,15 @@ const UpdateForm = ({ onChange, withNumberInput, deleteButtonName }: IProps) => 
 
     <div className="flex gap-6">
       <Button variant={EButtonVariant.PRIMARY} type="submit">
-        Vytvořit
+        {submitButtonName}
       </Button>
 
-      {deleteButtonName && (
-        <Button variant={EButtonVariant.DELETE} type="submit">
+      {!!deleteButtonName && (
+        <Button
+          variant={EButtonVariant.DELETE}
+          type="button"
+          onClick={onDelete}
+        >
           {deleteButtonName}
         </Button>
       )}

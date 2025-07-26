@@ -2,7 +2,7 @@ import { EButtonVariant } from "@/lib/enums";
 import React from "react";
 import Button from "../ui/Button";
 import { TShopList } from '@/lib/types';
-import useShoppingList from "@/hooks/useShoppingList";
+import { useShoppingList } from "@/context/ShoppingListContext";
 
 const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
   const { deleteItemFromList } = useShoppingList();

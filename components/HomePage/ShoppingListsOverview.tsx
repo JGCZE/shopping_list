@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import useShoppingList from "@/hooks/useShoppingList";
 import ShoppingLists from "./components/ShoppingLists";
+import { useShoppingList } from "@/context/ShoppingListContext";
 
 const ShoppingListsOverview = () => {
   const { shoppingList } = useShoppingList();
