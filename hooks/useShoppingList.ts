@@ -42,6 +42,7 @@ const useShoppingList = (decodedSlug?: string): IReturn => {
   }, []);
 
   const saveNewItemsToExistingList = useCallback((formData: FormData) => {
+    console.log("decodedSlug TEXT");
     const formItem = formData.get("listItem")?.toString();
     const formAmount = formData.get("listAmount")?.toString() || "1";
 

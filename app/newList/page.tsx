@@ -1,5 +1,5 @@
 "use client";
-import CreateForm from "@/components/CreateForm";
+import CreateForm from "@/components/UpdateForm";
 import useShoppingList from "@/hooks/useShoppingList";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ const NewList = () => {
     <div className="container">
       <h2>Vytvoření nového seznamu</h2>
 
-      <CreateForm saveNewList={saveNewList} />
+      <CreateForm onChange={saveNewList} />
 
       <Link href="/">Zpět na hlavní stránku</Link>
     </div>

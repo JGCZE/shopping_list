@@ -5,7 +5,7 @@ type TItem = {
 };
 
 export type TShopList = {
-  id: number;
+  id: string;
   name: string;
   link: string;
   items: Array<TItem>;

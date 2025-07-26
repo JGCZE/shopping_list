@@ -11,20 +11,18 @@ const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
 
   return (
     <div>
-      <h2>{shoppingList.name}</h2>
+      <h2>seznam: {shoppingList.name}</h2>
       {!shoppingList.items?.length && <h3 className="text-gray-500 font-bold">Seznam je prázdný.</h3>}
 
       <div className="flex flex-col">
         {shoppingList.items?.map(({ id, name, amount }) => (
-          <div key={id} className="my-4 flex justify-between gap-24 w-1/2">
+          <div key={id} className="my-4 flex justify-between items-center w-1/2">
             <span>
-              <strong className="mr-2">{name} - </strong>
-              {amount} X
+              <strong className="mr-2 text-xl">{name} </strong>
+              {amount} kusů
             </span>
 
-            <div className="flex gap-4">
-              <Button variant={EButtonVariant.DELETE}>Smazat</Button>
-            </div>
+            <Button variant={EButtonVariant.DELETE}>Smazat</Button>
           </div>
         ))}
       </div>

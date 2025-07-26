@@ -1,5 +1,5 @@
 "use client";
-import CreateForm from "@/components/CreateForm";
+import CreateForm from "@/components/UpdateForm";
 import Items from "@/components/List/Lists";
 import useShoppingList from "@/hooks/useShoppingList";
 import Link from "next/link";
@@ -30,13 +30,13 @@ const List = () => {
       <h2>Položky seznamu</h2>
 
       <CreateForm
-        saveNewList={saveNewItemsToExistingList}
+        onChange={saveNewItemsToExistingList}
         withNumberInput
       />
 
        {!!currentList && <Items shoppingList={currentList} />}
 
-      <Link href="/" className="w-54">
+      <Link href="/" className="w-54 mt-12">
         Zpět na hlavní stránku
       </Link>
     </div>
