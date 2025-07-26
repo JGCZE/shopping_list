@@ -8,7 +8,6 @@ const EditList = ({}) => {
   const { id } = useParams();
   const router = useRouter();
 
-
   const { shoppingList, updateListName, deleteList } = useShoppingList();
 
   const currentList = shoppingList.find((item) => item.id === id);
@@ -45,6 +44,7 @@ const EditList = ({}) => {
         onChange={handleRename}
         deleteButtonName="Smazat"
         onDelete={handleDelete}
+        submitButtonName="Přejmenovat"
       />
 
       <Link href="/">Zpět na hlavní stránku</Link>

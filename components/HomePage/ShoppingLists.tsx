@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "../../ui/Button";
+import Button from "../ui/Button";
 import { EButtonVariant } from "@/lib/enums";
 import { TShoppingList } from "@/lib/types";
 import { useShoppingList } from "@/context/ShoppingListContext";

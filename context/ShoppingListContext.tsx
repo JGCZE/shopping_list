@@ -11,6 +11,7 @@ interface IShoppingListContext {
   updateListName: (id: string, newName: string) => void;
   deleteList: (id: string) => void;
   deleteItemFromList: (listId: string, itemId: string) => void;
+  updateItemInList: (listId: string, itemId: string, updates: { name?: string; amount?: number }) => void;
 }
 
 const ShoppingListContext = createContext<IShoppingListContext | null>(null);
@@ -118,6 +119,24 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     setStatus({ status: "success", message: "Seznam přejmenován" });
   }, [shoppingList]);
 
+  const updateItemInList = useCallback((listId: string, itemId: string, updates: { name?: string; amount?: number }) => {
+    const updatedLists = shoppingList.map(list => {
+      if (list.id === listId) {
+        return {
+          ...list,
+          items: list.items.map(item =>
+            item.id === itemId ? { ...item, ...updates } : item
+          )
+        };
+      }
+    return list;
+  });
+
+  setShoppingList(updatedLists);
+  localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+  setStatus({ status: "success", message: "Položka upravena" });
+}, [shoppingList]);
+
   const deleteList = useCallback((id: string) => {
     const updatedLists = shoppingList.filter(list => list.id !== id);
     setShoppingList(updatedLists);
@@ -160,7 +179,8 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     updateListName,
     saveNewItemsToExistingList,
     deleteList,
-    deleteItemFromList
+    deleteItemFromList,
+    updateItemInList,
   }
 
   return (
