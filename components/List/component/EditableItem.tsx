@@ -27,7 +27,7 @@ const EditableItem = ({
           onChange={(e) =>
             setEditValues({ ...editValues, name: e.target.value })
           }
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1 w-24 sm:w-48"
           autoFocus
         />
 
@@ -37,10 +37,10 @@ const EditableItem = ({
           onChange={(e) =>
             setEditValues({ ...editValues, amount: Number(e.target.value) })
           }
-          className="border rounded px-2 py-1 w-20"
+          className="border rounded px-2 py-1 w-10 sm:w-20"
           min="1"
         />
-        <span>kusů</span>
+        <span className="hidden sm:block">kusů</span>
       </div>
 
       <div className="gap-2 flex">

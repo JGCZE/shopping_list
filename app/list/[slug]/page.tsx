@@ -14,7 +14,6 @@ const List = () => {
     shoppingList,
     saveNewItemsToExistingList,
     status,
-    deleteItemFromList,
   } = useShoppingList();
 
   const currentList = shoppingList.find((item) => item.link === `/${decodedSlug}`);

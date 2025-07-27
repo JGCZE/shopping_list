@@ -18,12 +18,14 @@ const PurchaseItem = ({
   name,
 }: IProps) => (
   <>
-    <span>
-      <strong className="mr-2 text-xl">{name}</strong>
-      {amount} kusů
-    </span>
+    <div className="flex flex-col sm:flex-row sm:items-center">
+      <strong className="sm:mr-2 sm:text-xl">{name}</strong>
+      <div>
+        {amount} kusů
+      </div>
+    </div>
 
-    <div className="gap-2 flex">
+    <div className="sm:gap-2 flex">
       <Button
         variant={EButtonVariant.PRIMARY}
         onClick={() => handleEditItem(id, name, amount)}
