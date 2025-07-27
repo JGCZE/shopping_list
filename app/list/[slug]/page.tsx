@@ -3,15 +3,19 @@ import CreateForm from "@/components/UpdateForm";
 import Items from "@/components/List/Lists";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import clsx from "clsx";
 import { useShoppingList } from "@/context/ShoppingListContext";
+import Status from "@/components/Status";
 
 const List = () => {
   const { slug } = useParams();
   const decodedSlug = decodeURIComponent(slug as string);
 
-  const { shoppingList, saveNewItemsToExistingList, status } =
-    useShoppingList();
+  const {
+    shoppingList,
+    saveNewItemsToExistingList,
+    status,
+    deleteItemFromList,
+  } = useShoppingList();
 
   const currentList = shoppingList.find((item) => item.link === `/${decodedSlug}`);
 
@@ -23,6 +27,7 @@ const List = () => {
     return (
      <>
       <div>Seznam nenalezen</div>
+
       <Link href="/" className="w-54">
         Zpět na hlavní stránku
       </Link>
@@ -40,13 +45,7 @@ const List = () => {
         hasWhisperSuggestions
       />
 
-      {status.message &&
-        <p className={clsx({
-           "text-red-500": status.status === "error",
-           "text-green-500": status.status === "success"
-         })}>
-           {status.message}
-        </p>}
+      <Status status={status} />
 
        {!!currentList && <Items shoppingList={currentList} />}
 

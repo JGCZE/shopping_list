@@ -17,6 +17,8 @@ interface IShoppingListContext {
   updateListItems: (listId: string, newItems: TShopList['items']) => void;
 }
 
+const LOCAL_STORAGE_KEY = "shoppingList";
+
 const ShoppingListContext = createContext<IShoppingListContext | null>(null);
 
 export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
@@ -24,7 +26,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
   const [status, setStatus] = useState<TStatus>({ status: "", message: "" });
 
   useEffect(() => {
-    const existingLists = localStorage.getItem("shoppingList");
+    const existingLists = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (existingLists) {
       const parsedLists: TShoppingList["shoppingList"] = JSON.parse(existingLists);
@@ -39,13 +41,10 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
   const saveNewList = useCallback((formData: FormData) => {
     const formDataItem = formData.get("listItem")?.toString();
   
-      if (!formDataItem?.trim().length) {
-        setStatus({ status: "error", message: "Název je povinný" });
-        return;
-      }
-  /* 
-      const existingLists = localStorage.getItem("shoppingList");
-    const parsedLists: TShoppingList["shoppingList"] = existingLists ? JSON.parse(existingLists) : []; */
+    if (!formDataItem?.trim().length) {
+      setStatus({ status: "error", message: "Název je povinný" });
+      return;
+    }
   
     if (shoppingList.some(list => list.name.toLowerCase() === formDataItem.trim().toLowerCase())) {
       setStatus({ status: "error", message: "Seznam s tímto názvem již existuje" });
@@ -61,7 +60,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
   
     const updatedLists = [...shoppingList, newList];
     setShoppingList(updatedLists);
-    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
     setStatus({ status: "success", message: "Seznam byl úspěšně přidán" });
   }, [shoppingList]);
 
@@ -96,7 +95,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     });
 
     setShoppingList(updatedLists);
-    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
     setStatus({ status: "success", message: "Položka přidána" });
   }, [shoppingList]);
 
@@ -118,7 +117,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setShoppingList(updatedLists);
-    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
     setStatus({ status: "success", message: "Seznam přejmenován" });
   }, [shoppingList]);
 
@@ -136,7 +135,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
   });
 
   setShoppingList(updatedLists);
-  localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
   setStatus({ status: "success", message: "Položka upravena" });
 }, [shoppingList]);
 
@@ -152,21 +151,18 @@ const updateListItems = useCallback((listId: string, newItems: TShopList['items'
   });
 
   setShoppingList(updatedLists);
-  localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
 }, [shoppingList]);
 
   const deleteList = useCallback((id: string) => {
     const updatedLists = shoppingList.filter(list => list.id !== id);
     setShoppingList(updatedLists);
-    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
     setStatus({ status: "success", message: "Seznam smazán" });
   }, [shoppingList]);
 
-  const deleteItemFromList = useCallback((itemId: string, listId: string) => {
-    const existingLists = localStorage.getItem("shoppingList");
-    const parsedLists: TShoppingList["shoppingList"] = existingLists ? JSON.parse(existingLists) : [];
-
-    const updatedLists = parsedLists.map(list => {
+  const deleteItemFromList = useCallback((listId: string, itemId: string) => {
+    const updatedLists = shoppingList.map(list => {
       if (list.id === listId) {
         return {
           ...list,
@@ -177,8 +173,9 @@ const updateListItems = useCallback((listId: string, newItems: TShopList['items'
     });
 
     setShoppingList(updatedLists);
-    localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
-  }, []);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLists));
+    setStatus({ status: "success", message: "Položka smazána" });
+  }, [shoppingList]);
 
   useEffect(() => {
     if (status.message) {

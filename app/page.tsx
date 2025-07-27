@@ -5,7 +5,6 @@ import ShoppingLists from "@/components/HomePage/ShoppingLists";
 
 const Home = () =>  {
   const { shoppingList } = useShoppingList();
-  console.log("shoppingList", shoppingList);
 
   return (
     <div className="container">

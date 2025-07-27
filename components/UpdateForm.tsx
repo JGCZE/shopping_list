@@ -31,7 +31,7 @@ const UpdateForm = ({
     
     return allItems.filter(item => 
       item.toLowerCase().includes(searchText.toLowerCase())
-    ).slice(0, 5); // Omezit na 5 návrhů
+    ).slice(0, 10);
   };
   
   const suggestions = getSuggestions(itemValue);
@@ -41,39 +41,48 @@ const UpdateForm = ({
     setIsOpen(false);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    onChange(formData);
+    
+    setItemValue("");
+  };
+
   return (
-  <form action={(data) => onChange(data)} className="flex flex-col gap-3">
+  <form onSubmit={handleSubmit} className="flex flex-col gap-3">
     <div className="grid grid-cols-3 mb-4 w-1/2 relative">
       <label htmlFor="listName" className="">nazev </label>
+      
       <div className="col-span-2 relative">
-          <input
-            type="text"
-            id="listName"
-            name="listItem"
-            value={itemValue}
-            className="w-full mb-4"
-            onFocus={() => setIsOpen(true)}
-            onBlur={() => setTimeout(() => setIsOpen(false))}
-            onChange={(e) => setItemValue(e.target.value)}
-            autoComplete="off"
-          />
+        <input
+          type="text"
+          id="listName"
+          name="listItem"
+          value={itemValue}
+          className="w-full mb-4"
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false))}
+          onChange={(e) => setItemValue(e.target.value)}
+          autoComplete="off"
+        />
 
-          {isOpen && hasWhisperSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 bg-red-100 border border-red-500 rounded-md shadow-lg z-10 -mt-4">
-              <span className="font-bold ml-2"> Mysleli jste? </span>
+        {isOpen && hasWhisperSuggestions && suggestions.length > 0 && (
+          <div className="absolute top-full left-0 right-0 bg-red-100 border border-red-500 rounded-md shadow-lg z-10 -mt-4">
+            <span className="font-bold ml-2"> Mysleli jste? </span>
 
-              {suggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                  onMouseDown={() => handleSelectSuggestion(suggestion)}
-                >
-                  {suggestion}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+            {suggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                onMouseDown={() => handleSelectSuggestion(suggestion)}
+              >
+                {suggestion}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {withNumberInput && (
           <>
