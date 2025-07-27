@@ -1,5 +1,5 @@
 "use client"
-import { TShoppingList, TStatus } from "@/lib/types";
+import { TShopList, TShoppingList, TStatus } from "@/lib/types";
 import { generateId, makeUrlFromString } from "@/lib/utils";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
@@ -14,6 +14,7 @@ interface IShoppingListContext {
   updateItemInList: (listId: string, itemId: string, updates: { name?: string; amount?: number }) => void;
   getAllUniqueItems: () => Array<string>;
   setStatus: (status: TStatus) => void;
+  updateListItems: (listId: string, newItems: TShopList['items']) => void;
 }
 
 const ShoppingListContext = createContext<IShoppingListContext | null>(null);
@@ -139,6 +140,21 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
   setStatus({ status: "success", message: "Položka upravena" });
 }, [shoppingList]);
 
+const updateListItems = useCallback((listId: string, newItems: TShopList['items']) => {
+  const updatedLists = shoppingList.map(list => {
+    if (list.id === listId) {
+      return { 
+        ...list, 
+        items: newItems 
+      };
+    }
+    return list;
+  });
+
+  setShoppingList(updatedLists);
+  localStorage.setItem("shoppingList", JSON.stringify(updatedLists));
+}, [shoppingList]);
+
   const deleteList = useCallback((id: string) => {
     const updatedLists = shoppingList.filter(list => list.id !== id);
     setShoppingList(updatedLists);
@@ -195,6 +211,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     deleteItemFromList,
     updateItemInList,
     setStatus,
+    updateListItems,
   }
 
   return (
