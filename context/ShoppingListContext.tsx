@@ -13,6 +13,7 @@ interface IShoppingListContext {
   deleteItemFromList: (listId: string, itemId: string) => void;
   updateItemInList: (listId: string, itemId: string, updates: { name?: string; amount?: number }) => void;
   getAllUniqueItems: () => Array<string>;
+  setStatus: (status: TStatus) => void;
 }
 
 const ShoppingListContext = createContext<IShoppingListContext | null>(null);
@@ -193,6 +194,7 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     deleteList,
     deleteItemFromList,
     updateItemInList,
+    setStatus,
   }
 
   return (

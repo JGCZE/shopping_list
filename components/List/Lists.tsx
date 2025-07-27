@@ -7,8 +7,8 @@ import { useShoppingList } from "@/context/ShoppingListContext";
 const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValues, setEditValues] = useState({ name: "", amount: 1 });
-  const { deleteItemFromList, updateItemInList } = useShoppingList();
-  
+  const { deleteItemFromList, updateItemInList, setStatus } = useShoppingList();
+
   if (!shoppingList) {
     return <p className="text-gray-500">Seznam je prázdný.</p>;
   }
@@ -23,6 +23,16 @@ const Lists = ({ shoppingList }: { shoppingList: TShopList }) => {
   };
 
   const handleSaveEdit = (itemId: string) => {
+    const isDuplicate = shoppingList.items.some(item => 
+    item.name.toLowerCase() === editValues.name.trim().toLowerCase() && 
+    item.id !== itemId
+   );
+
+    if (isDuplicate) {
+      setStatus({ status: "error", message: "Položka s tímto názvem již v seznamu existuje." });
+      return;
+    }
+
     if (editValues.name.trim() && editValues.amount > 0) {
       updateItemInList(shoppingList.id, itemId, editValues);
       setEditingId(null);
